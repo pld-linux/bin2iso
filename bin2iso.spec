@@ -1,5 +1,5 @@
 Summary:	Convert BIN into ISO images
-Summary(pl):	Konwertuje pliki obrazów z formatu BIN do iso
+Summary(pl):	Narzêdzie do konwersji plików obrazów z formatu BIN do iso
 Name:		bin2iso
 Version:	1.9b
 Release:	2
@@ -14,13 +14,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Convert BIN into ISO images.
 
 %description -l pl
-Konwertuje pliki obrazów z formatu BIN do iso.
+Narzêdzie do konwersji plików obrazów z formatu BIN do iso.
 
 %prep
 %setup -q -c -T
 
 %build
-gcc %{rpmcflags} %{SOURCE0} -o %{name}
+%{__cc} %{rpmcflags} %{SOURCE0} -o %{name}
 
 %install
 rm -rf $RPM_BUILD_ROOT
