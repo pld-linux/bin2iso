@@ -1,0 +1,152 @@
+--- bin2iso.c	2000-11-04 23:08:02.000000000 +0100
++++ bin2iso.c.wiget	2004-01-30 12:05:54.241985816 +0100
+@@ -1,3 +1,4 @@
++#include <unistd.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
+@@ -51,7 +52,7 @@
+ #define UNKNOWN -1
+ #define OFFSET 150                    
+ // got this from easycd pro by looking at a blank disk so it may be off...
+-#define CD74_MAX_SECTORS 334873 // 653.75 Mb 
++#define CD74_MAX_SECTORS 334873L // 653.75 Mb 
+          
+ 
+ unsigned long int Index(char m, char s, char f)
+@@ -111,7 +112,7 @@
+    unsigned long size; /* track size in bytes */
+ } tTrack;
+ 
+-buffered_fread(unsigned char *array, unsigned int size) {
++int buffered_fread(unsigned char *array, unsigned int size) {
+    unsigned int i;
+    
+    if(INBUF_WIDX == 0) {    
+@@ -125,7 +126,7 @@
+       array[i] = INBUF[INBUF_RIDX++];
+       if((INBUF_RIDX == INBUF_WIDX) && (i < (size -1))) {
+          printf("   Warning: Premature EOF\n");
+-         while(i++ < size) { array[i] == 0; }/* zero fill the rest */
++         while(i++ < size) { array[i] = 0; }/* zero fill the rest */
+          break;
+       }
+    }
+@@ -142,7 +143,7 @@
+ 
+ void buffered_fwrite(unsigned char *array, unsigned int size) {
+    unsigned int idx;
+-   unsigned long int readpos;
++   unsigned long int readpos = 0;
+      
+    if(OUTBUF_IDX+size >= OUTBUF_SIZE) {     
+ 
+@@ -189,7 +190,7 @@
+ 
+ void flush_buffers(void)
+ {
+-   unsigned long int readpos;
++   unsigned long int readpos = 0;
+ 
+    if(fdOutFile == fdBinFile) {
+       readpos = ftell(fdOutFile);
+@@ -263,7 +264,7 @@
+    } else if(track->mode == AUDIO) {
+       strcat(track->name, ".wav");
+    } else {
+-      printf("Track %d Unsupported mode\n", track->num);
++      printf("Track %s Unsupported mode\n", track->num);
+       return(1);
+    }
+ 
+@@ -279,9 +280,9 @@
+       if (strncmp(&Line[4], "INDEX ", 6)==0) 
+       {
+          strncpy(inum, &Line[10], 2); inum[2] = '\0';
+-         min = ((Line[13]-'0')<<4) | Line[14]-'0';
+-         sec = ((Line[16]-'0')<<4) | Line[17]-'0';
+-         block = ((Line[19]-'0')<<4) | Line[20]-'0';
++         min = ((Line[13]-'0')<<4) | (Line[14]-'0');
++         sec = ((Line[16]-'0')<<4) | (Line[17]-'0');
++         block = ((Line[19]-'0')<<4) | (Line[20]-'0');
+          
+          
+          if(strcmp(inum, "00")==0) track->idx0 = Index(min, sec, block);
+@@ -326,14 +327,14 @@
+    
+    uiLastIndex = startidx-1;
+    // Input -- process -- Output 
+-   if(startidx != 0) printf("\nNote: PreGap = %d frames\n", startidx-preidx);
++   if(startidx != 0) printf("\nNote: PreGap = %ld frames\n", startidx-preidx);
+    else printf("\nNote: PreGap = %d frames\n", OFFSET); // cd standard: starting offset
+                                                        // - of course this isn't true for bootable cd's...
+ 
+    if(sOutFilename[0] != '\0') {
+-      printf("Creating %s (%06d,%06d) ", sOutFilename, startidx, endidx-1);
++      printf("Creating %s (%06ld,%06ld) ", sOutFilename, startidx, endidx-1);
+    } else {
+-      printf("Converting (%06d,%06d) ", startidx, endidx-1);
++      printf("Converting (%06ld,%06ld) ", startidx, endidx-1);
+    }
+    switch(mode)
+    {
+@@ -412,14 +413,14 @@
+          buffered_fwrite( buf, SIZERAW );   
+          uiLastIndex++;
+          memset( &buf[0], '\0', sizeof( buf ) );
+-         if (startidx%PROG_INTERVAL == 0) { printf("\b\b\b\b\b\b%06d", startidx); }
++         if (startidx%PROG_INTERVAL == 0) { printf("\b\b\b\b\b\b%06ld", startidx); }
+          if (++startidx == endidx) { printf("\b\b\b\b\b\bComplete\n"); break; }
+       }
+    } else if (mode == MODE1_2048) {
+       while( buffered_fread( buf, SIZEISO_MODE1) ) {         
+          buffered_fwrite( buf, SIZEISO_MODE1 );   
+          uiLastIndex++;
+-         if (startidx%PROG_INTERVAL == 0) { printf("\b\b\b\b\b\b%06d", startidx); }
++         if (startidx%PROG_INTERVAL == 0) { printf("\b\b\b\b\b\b%06ld", startidx); }
+          if (++startidx == endidx) { printf("\b\b\b\b\b\bComplete\n"); break; }
+       }
+    } else {
+@@ -493,7 +494,7 @@
+          }         
+             
+          memset( &buf[0], '\0', sizeof( buf ) );
+-         if (startidx%PROG_INTERVAL == 0) { printf("\b\b\b\b\b\b%06d", startidx); }
++         if (startidx%PROG_INTERVAL == 0) { printf("\b\b\b\b\b\b%06ld", startidx); }
+          if (++startidx == endidx) { printf("\b\b\b\b\b\bComplete\n"); break; }
+       }
+    }
+@@ -601,7 +602,6 @@
+    int i, k;
+    unsigned long int j;
+    unsigned char buf[SIZERAW];
+-   int c = 0;
+    int writegap = 0;
+    short value;
+    int count;
+@@ -645,7 +645,6 @@
+ /* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
+ 
+ int   main(int argc, char **argv) {
+-   unsigned long int count = 0;
+ //   int printon = 0;
+ 
+    char sLine[256];
+@@ -789,7 +788,7 @@
+ //         strlwr(sBinFilename);
+ 
+       } else {
+-         printf ("Error: Filename not found on first line of cuefile.\n", argv[1]);
++         printf ("Error: Filename not found on first line of cuefile %s.\n", argv[1]);
+          exit (1);
+       }
+    
+@@ -924,7 +923,7 @@
+ 
+       printf("\n");
+       for(i = 0; i <= nTracks-1; i++) {
+-         printf("%s (%3d Mb) - sectors %06ld:%06ld (offset %09ld:%09ld)\n", 
++         printf("%s (%3ld Mb) - sectors %06ld:%06ld (offset %09ld:%09ld)\n", 
+             tracks[i].name, 
+             tracks[i].size/(1024*1024), 
+             tracks[i].idx1, 
