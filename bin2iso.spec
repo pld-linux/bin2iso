@@ -3,7 +3,7 @@ Summary(pl):	Narzêdzie do konwersji plików obrazów z formatu BIN do iso
 Name:		bin2iso
 Version:	1.9b
 Release:	7
-License:	Unknown
+License:	unknown
 Group:		Applications/File
 Source0:	http://users.andara.com/~doiron/bin2iso/linux/%{name}19b_linux.c
 # NoSource0-md5:	01dab72496175a772bcf6e08c854d440
