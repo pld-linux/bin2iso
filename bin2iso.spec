@@ -6,7 +6,7 @@ Release:	3
 License:	Unknown
 Group:		Applications/File
 Source0:	http://users.andara.com/~doiron/bin2iso/linux/%{name}19b_linux.c
-# Source0-md5:	01dab72496175a772bcf6e08c854d440
+# NoSource0-md5:	01dab72496175a772bcf6e08c854d440
 URL:		http://users.andara.com/~doiron/bin2iso/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
