@@ -5,8 +5,6 @@ Version:	1.9b
 Release:	2
 License:	Unknown
 Group:		Applications/File
-Group(de):	Applikationen/Datei
-Group(pl):	Aplikacje/Pliki
 Source0:	http://users.andara.com/~doiron/bin2iso/linux/%{name}19b_linux.c
 URL:		http://users.andara.com/~doiron/bin2iso/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
