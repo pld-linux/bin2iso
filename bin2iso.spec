@@ -1,12 +1,13 @@
-Summary:	Convert BIN into ISO images.
-Summary(pl):	Konwertuje pliki obrazów z formatu BIN do iso.
+Summary:	Convert BIN into ISO images
+Summary(pl):	Konwertuje pliki obrazów z formatu BIN do iso
 Name:		bin2iso
 Version:	1.9b
 Release:	1
-Group:		Utilities/File
-Group(pl):	Narzêdzia/Pliki
+Group:		Applications/File
+Group(de):	Applikationen/Datei
+Group(pl):	Aplikacje/Pliki
 License:	unknown
-Source0:	http://users.andara.com/~doiron/bin2iso/linux/bin2iso19b_linux.c
+Source0:	http://users.andara.com/~doiron/bin2iso/linux/%{name}19b_linux.c
 URL:		http://users.andara.com/~doiron/bin2iso/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -20,13 +21,13 @@ Konwertuje pliki obrazów z formatu BIN do iso.
 %setup -q -c -T
 
 %build
-gcc $RPM_OPT_FLAGS %{SOURCE0} -o %{name}
+gcc %{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g} %{SOURCE0} -o %{name}
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_bindir}
 
-install -d		$RPM_BUILD_ROOT%{_bindir}
-install %{name}		$RPM_BUILD_ROOT%{_bindir}
+install %{name} $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
