@@ -2,11 +2,12 @@ Summary:	Convert BIN into ISO images
 Summary(pl):	Narzêdzie do konwersji plików obrazów z formatu BIN do iso
 Name:		bin2iso
 Version:	1.9b
-Release:	4
+Release:	5
 License:	Unknown
 Group:		Applications/File
 Source0:	http://users.andara.com/~doiron/bin2iso/linux/%{name}19b_linux.c
 # NoSource0-md5:	01dab72496175a772bcf6e08c854d440
+Patch0:		%{name}-warnings.patch
 URL:		http://users.andara.com/~doiron/bin2iso/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -18,9 +19,11 @@ Narzêdzie do konwersji plików obrazów z formatu BIN do iso.
 
 %prep
 %setup -q -c -T
+install %{SOURCE0} %{name}.c
+%patch -p0
 
 %build
-%{__cc} %{rpmcflags} %{SOURCE0} -o %{name}
+%{__cc} -Wall %{rpmcflags} %{name}.c -o %{name}
 
 %install
 rm -rf $RPM_BUILD_ROOT
