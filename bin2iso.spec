@@ -21,7 +21,7 @@ Konwertuje pliki obrazów z formatu BIN do iso.
 %setup -q -c -T
 
 %build
-gcc %{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS} %{SOURCE0} -o %{name}
+gcc %{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS} %{SOURCE0} -o %{name}
 
 %install
 rm -rf $RPM_BUILD_ROOT
