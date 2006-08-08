@@ -23,7 +23,7 @@ Narzêdzie do konwersji plików obrazów z formatu BIN do iso.
 %setup -q -c -T
 install %{SOURCE0} %{name}.c
 install %{SOURCE1} readme.txt
-%patch -p0
+%patch0 -p0
 
 %build
 %{__cc} -Wall %{rpmcflags} %{name}.c -o %{name}
