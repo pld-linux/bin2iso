@@ -1,5 +1,5 @@
 Summary:	Convert BIN into ISO images
-Summary(pl.UTF-8):   Narzędzie do konwersji plików obrazów z formatu BIN do iso
+Summary(pl.UTF-8):	Narzędzie do konwersji plików obrazów z formatu BIN do iso
 Name:		bin2iso
 Version:	1.9b
 Release:	7
