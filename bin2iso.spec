@@ -1,5 +1,5 @@
 Summary:	Convert BIN into ISO images
-Summary(pl):	Narz阣zie do konwersji plik體 obraz體 z formatu BIN do iso
+Summary(pl.UTF-8):   Narz臋dzie do konwersji plik贸w obraz贸w z formatu BIN do iso
 Name:		bin2iso
 Version:	1.9b
 Release:	7
@@ -16,8 +16,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 Convert BIN into ISO images.
 
-%description -l pl
-Narz阣zie do konwersji plik體 obraz體 z formatu BIN do iso.
+%description -l pl.UTF-8
+Narz臋dzie do konwersji plik贸w obraz贸w z formatu BIN do iso.
 
 %prep
 %setup -q -c -T
