@@ -5,8 +5,8 @@ Version:	1.9b
 Release:	8
 License:	unknown
 Group:		Applications/File
-Source0:	http://users.andara.com/~doiron/bin2iso/linux/%{name}19b_linux.c
-# NoSource0-md5:	01dab72496175a772bcf6e08c854d440
+# http://users.andara.com/~doiron/bin2iso/linux/%{name}19b_linux.c
+Source0:	%{name}19b_linux.c
 Source1:	http://users.andara.com/~doiron/bin2iso/readme.txt
 # Source1-md5:	703e50ee80e5c15a742458aab8a93340
 Patch0:		%{name}-warnings.patch
@@ -26,7 +26,7 @@ install %{SOURCE1} readme.txt
 %patch0 -p0
 
 %build
-%{__cc} -Wall %{rpmcflags} %{name}.c -o %{name}
+%{__cc} -Wall %{rpmcflags} %{rpmldflags} %{name}.c -o %{name}
 
 %install
 rm -rf $RPM_BUILD_ROOT
